@@ -27,7 +27,7 @@ const Login = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2 className="auth-title">Login to APSRTC</h2>
+        <h2 className="auth-title">Login to Amma Travels</h2>
         {error && <p className="auth-error">{error}</p>}
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">

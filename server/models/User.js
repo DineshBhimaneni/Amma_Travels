@@ -12,6 +12,12 @@ const createUsersTable = async () => {
   `;
   try {
     await db.query(query);
+    // Add fcm_token column if not present in existing table
+    const [cols] = await db.query("SHOW COLUMNS FROM users LIKE 'fcm_token'");
+    if (cols.length === 0) {
+      await db.query("ALTER TABLE users ADD COLUMN fcm_token TEXT");
+      console.log('fcm_token column added to users table');
+    }
     console.log('Users table ready');
   } catch (error) {
     console.error('Error creating users table:', error);
@@ -24,8 +30,18 @@ const findUserByEmail = async (email) => {
 };
 
 const findUserById = async (id) => {
-  const [rows] = await db.query('SELECT id, name, email, created_at FROM users WHERE id = ?', [id]);
+  const [rows] = await db.query('SELECT id, name, email, fcm_token, created_at FROM users WHERE id = ?', [id]);
   return rows[0];
+};
+
+const updateFcmToken = async (userId, fcmToken) => {
+  const [result] = await db.query('UPDATE users SET fcm_token = ? WHERE id = ?', [fcmToken, userId]);
+  return result.affectedRows > 0;
+};
+
+const getFcmTokenByUserId = async (userId) => {
+  const [rows] = await db.query('SELECT fcm_token FROM users WHERE id = ?', [userId]);
+  return rows[0] ? rows[0].fcm_token : null;
 };
 
 const createUser = async (name, email, hashedPassword) => {
@@ -45,6 +61,8 @@ module.exports = {
   createUsersTable,
   findUserByEmail,
   findUserById,
+  updateFcmToken,
+  getFcmTokenByUserId,
   createUser,
   getAllUsers
 };

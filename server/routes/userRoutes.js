@@ -19,4 +19,22 @@ router.get('/profile', protect, async (req, res) => {
   }
 });
 
+// @desc    Save/update user's FCM registration token
+// @route   POST /api/users/fcm-token
+// @access  Private
+router.post('/fcm-token', protect, async (req, res) => {
+  try {
+    const { fcm_token } = req.body;
+    if (fcm_token === undefined) {
+      return res.status(400).json({ message: 'fcm_token is required' });
+    }
+
+    await User.updateFcmToken(req.userId, fcm_token || null);
+    res.json({ message: 'FCM token updated successfully' });
+  } catch (error) {
+    console.error('Error saving FCM token:', error);
+    res.status(500).json({ message: 'Server error saving FCM token' });
+  }
+});
+
 module.exports = router;
