@@ -1,0 +1,49 @@
+# Build artifacts and binaries (Exceeds GitHub 100MB limit)
+*.apk
+*.aab
+
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+serviceAccountKey.json
+server/serviceAccountKey.json
+
+# Flutter and Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+apsrtc_mobile/build/
+apsrtc_mobile/.dart_tool/
+apsrtc_mobile/.flutter-plugins
+apsrtc_mobile/.flutter-plugins-dependencies
+
+# Android
+apsrtc_mobile/android/.gradle/
+apsrtc_mobile/android/local.properties
+apsrtc_mobile/android/app/debug/
+apsrtc_mobile/android/app/profile/
+apsrtc_mobile/android/app/release/
+.gradle/
+local.properties
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+~$*
+__pycache__/
+*.pyc

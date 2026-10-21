@@ -88,10 +88,82 @@ const deleteBus = async (req, res) => {
   }
 };
 
+const POPULAR_CITIES = [
+  'Hyderabad',
+  'Vijayawada',
+  'Visakhapatnam',
+  'Tirupati',
+  'Guntur',
+  'Kurnool',
+  'Nellore',
+  'Kadapa',
+  'Rajahmundry',
+  'Kakinada',
+  'Anantapur',
+  'Ongole',
+  'Warangal',
+  'Chittoor',
+  'Eluru',
+  'Srikakulam',
+  'Vizianagaram',
+  'Secunderabad',
+  'Nandyal',
+  'Madanapalle'
+];
+
+// @desc    Get all distinct route cities
+// @route   GET /api/buses/cities
+// @access  Public
+const getCities = async (req, res) => {
+  try {
+    const dbCities = await Bus.getCities();
+    const set = new Set();
+    const result = [];
+
+    // Prioritize DB cities
+    for (const city of dbCities) {
+      const lower = city.toLowerCase();
+      if (!set.has(lower)) {
+        set.add(lower);
+        result.push(city);
+      }
+    }
+
+    // Add popular cities
+    for (const city of POPULAR_CITIES) {
+      const lower = city.toLowerCase();
+      if (!set.has(lower)) {
+        set.add(lower);
+        result.push(city);
+      }
+    }
+
+    res.json(result.sort((a, b) => a.localeCompare(b)));
+  } catch (error) {
+    console.error('Error fetching cities:', error);
+    res.json(POPULAR_CITIES.sort((a, b) => a.localeCompare(b)));
+  }
+};
+
+// @desc    Get intermediate stops for a route
+// @route   GET /api/buses/:id/stops
+// @access  Public
+const getRouteStops = async (req, res) => {
+  try {
+    const stops = await Bus.getRouteStops(req.params.id);
+    res.json(stops);
+  } catch (error) {
+    console.error('Error fetching route stops:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   getAllBuses,
   searchBuses,
+  getCities,
   getBusById,
+  getRouteStops,
   createBus,
   updateBus,
   deleteBus

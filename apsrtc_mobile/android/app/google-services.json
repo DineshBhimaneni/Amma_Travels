@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "713353882232",
+    "project_id": "amma-travels-a3257",
+    "storage_bucket": "amma-travels-a3257.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713353882232:android:8877946821b0e68dbedb8d",
+        "android_client_info": {
+          "package_name": "com.example.apsrtc_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-sQbWBZY8EIymllEJZAAUwpRDMi_g2iU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,8 +6,13 @@ const BusCard = ({ bus }) => {
   const navigate = useNavigate();
 
   const handleSelectSeats = () => {
-    // Navigate to seat selection page for this specific route
-    navigate(`/bus/${bus.route_id}`);
+    // Navigate to seat selection page with searched boarding/dropping points
+    navigate(`/bus/${bus.route_id}`, {
+      state: {
+        searchSource: bus.source,
+        searchDestination: bus.destination,
+      },
+    });
   };
 
   // Helper to format time strings (e.g., "22:00:00" to "10:00 PM")

@@ -149,3 +149,87 @@
     position: static;
   }
 }
+
+/* Intermediate Stops Selection Card */
+.stops-selection-card {
+  margin-bottom: 25px;
+  background: #fdf8f6;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.stops-selection-card .section-title {
+  margin: 0 0 4px 0;
+  font-size: 1.05rem;
+  color: #9a3412;
+  font-weight: 700;
+}
+
+.stops-selection-card .section-subtitle {
+  margin: 0 0 14px 0;
+  font-size: 0.82rem;
+  color: #78350f;
+}
+
+.stops-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 600px) {
+  .stops-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stop-selector-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stop-selector-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.stop-select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  font-size: 0.9rem;
+  background-color: #ffffff;
+  color: #111827;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.stop-select:focus {
+  border-color: #9e1a1a;
+  box-shadow: 0 0 0 3px rgba(158, 26, 26, 0.15);
+}
+
+.segment-fare-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px dashed #fdba74;
+  font-size: 0.88rem;
+  color: #9a3412;
+}
+
+.segment-price {
+  font-weight: 700;
+  color: #b91c1c;
+  font-size: 1rem;
+}
+

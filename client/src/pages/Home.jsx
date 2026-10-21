@@ -8,7 +8,7 @@ const Home = () => {
       <SearchForm />
       
       <div className="container promo-section">
-        <h2 className="section-title">Why choose APSRTC Clone?</h2>
+        <h2 className="section-title">Why choose Amma Travels?</h2>
         <div className="features-grid">
           <div className="feature-card">
             <div className="feature-icon">🚌</div>

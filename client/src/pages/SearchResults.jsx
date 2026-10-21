@@ -19,7 +19,8 @@ const SearchResults = () => {
     ac: false,
     nonAc: false,
     sleeper: false,
-    seater: false
+    seater: false,
+    sortBy: 'default'
   });
 
   useEffect(() => {
@@ -50,18 +51,41 @@ const SearchResults = () => {
   };
 
   const handleFilterChange = (e) => {
-    const { name, checked } = e.target;
-    setFilters(prev => ({ ...prev, [name]: checked }));
+    const { name, checked, value, type } = e.target;
+    if (type === 'checkbox') {
+      setFilters(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setFilters(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const filteredBuses = useMemo(() => {
-    return buses.filter(bus => {
-      const type = bus.bus_type.toLowerCase();
+    let result = buses.filter(bus => {
+      const type = (bus.bus_type || '').toLowerCase();
+      const name = (bus.bus_name || '').toLowerCase();
+      const combined = `${type} ${name}`;
       
-      const isAc = type.includes('a/c') && !type.includes('non a/c');
-      const isNonAc = type.includes('non a/c');
-      const isSleeper = type.includes('sleeper');
-      const isSeater = type.includes('seater');
+      const isNonAc = combined.includes('non a/c') || 
+                      combined.includes('non-a/c') || 
+                      combined.includes('non a.c') || 
+                      combined.includes('non ac') || 
+                      combined.includes('non-ac') ||
+                      combined.includes('express') ||
+                      combined.includes('super luxury') ||
+                      combined.includes('ultra deluxe') ||
+                      combined.includes('palle velugu');
+
+      const isAc = !isNonAc && (
+        combined.includes('a/c') || 
+        combined.includes('ac') ||
+        combined.includes('garuda') ||
+        combined.includes('amaravathi') ||
+        combined.includes('vennela') ||
+        combined.includes('volvo')
+      );
+
+      const isSleeper = combined.includes('sleeper') || combined.includes('vennela');
+      const isSeater = combined.includes('seater') || combined.includes('seat') || !isSleeper;
 
       // Check Ac/Non-Ac (If both checked, show both. If one checked, filter by it)
       if (filters.ac && filters.nonAc) {
@@ -77,6 +101,16 @@ const SearchResults = () => {
 
       return true;
     });
+
+    if (filters.sortBy === 'fare_asc') {
+      result.sort((a, b) => (parseFloat(a.fare) || 0) - (parseFloat(b.fare) || 0));
+    } else if (filters.sortBy === 'fare_desc') {
+      result.sort((a, b) => (parseFloat(b.fare) || 0) - (parseFloat(a.fare) || 0));
+    } else if (filters.sortBy === 'time_asc') {
+      result.sort((a, b) => (a.departure_time || '').localeCompare(b.departure_time || ''));
+    }
+
+    return result;
   }, [buses, filters]);
 
   return (
@@ -99,10 +133,34 @@ const SearchResults = () => {
             <h3>Filters</h3>
             <button 
               className="clear-btn" 
-              onClick={() => setFilters({ac: false, nonAc: false, sleeper: false, seater: false})}
+              onClick={() => setFilters({ac: false, nonAc: false, sleeper: false, seater: false, sortBy: 'default'})}
             >
               Clear All
             </button>
+          </div>
+
+          <div className="filter-group">
+            <h4>Sort By</h4>
+            <select 
+              name="sortBy" 
+              value={filters.sortBy} 
+              onChange={handleFilterChange}
+              style={{
+                width: '100%',
+                padding: '8px 10px',
+                borderRadius: '6px',
+                border: '1px solid #d1d5db',
+                fontSize: '14px',
+                color: '#374151',
+                backgroundColor: '#fff',
+                outline: 'none'
+              }}
+            >
+              <option value="default">Default</option>
+              <option value="fare_asc">Price: Low to High</option>
+              <option value="fare_desc">Price: High to Low</option>
+              <option value="time_asc">Departure Time</option>
+            </select>
           </div>
           
           <div className="filter-group">
