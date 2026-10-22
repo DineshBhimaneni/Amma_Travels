@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer-content">
         <div className="footer-section">
-          <h3>APSRTC Clone</h3>
+          <h3>Amma Travels</h3>
           <p>Book your bus tickets with ease and comfort. Reliable service across Andhra Pradesh and beyond.</p>
         </div>
         <div className="footer-section">
@@ -19,12 +19,12 @@ const Footer = () => {
         </div>
         <div className="footer-section">
           <h3>Contact Us</h3>
-          <p>Email: support@apsrtc-clone.com</p>
+          <p>Email: support@ammatravels.com</p>
           <p>Phone: 1800-123-4567</p>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2026 APSRTC Clone. Built for demonstration.</p>
+        <p>&copy; 2026 Amma Travels. Built for demonstration.</p>
       </div>
     </footer>
   );

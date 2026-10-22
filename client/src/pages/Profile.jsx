@@ -6,7 +6,7 @@ import Toast from '../components/Toast';
 import './Profile.css';
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const { user, requestAndSyncFcmToken } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -78,6 +78,22 @@ const Profile = () => {
         <div className="profile-info">
           <h2>{user.name}</h2>
           <p>{user.email}</p>
+          <button
+            type="button"
+            className="btn-secondary"
+            style={{ marginTop: '8px', padding: '6px 12px', fontSize: '13px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            onClick={async () => {
+              showToast('Requesting browser notification permission...');
+              const token = await requestAndSyncFcmToken();
+              if (token) {
+                showToast('Push notifications enabled successfully!');
+              } else {
+                showToast('Permission not granted or Firebase config missing in client/.env', 'error');
+              }
+            }}
+          >
+            🔔 Enable Notifications
+          </button>
         </div>
       </div>
 
@@ -97,7 +113,7 @@ const Profile = () => {
                 </div>
                 <div className="booking-details">
                   <div className="route">
-                    {booking.source} ➔ {booking.destination}
+                    {booking.boarding_stop || booking.source} ➔ {booking.dropping_stop || booking.destination}
                   </div>
                   <div className="date">Date: {booking.journey_date.substring(0, 10)}</div>
                   <div className="amount">Amount: ₹{booking.total_fare}</div>
@@ -136,7 +152,7 @@ const Profile = () => {
           <div className="ticket-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-btn" onClick={() => setSelectedTicket(null)}>&times;</button>
             <div className="ticket-header">
-              <h3>APSRTC e-Ticket</h3>
+              <h3>Amma Travels e-Ticket</h3>
               <p className="ticket-id">PNR / Booking ID: <strong>{selectedTicket.id}</strong></p>
             </div>
 
@@ -154,13 +170,13 @@ const Profile = () => {
 
               <div className="ticket-row border-top">
                 <div className="ticket-info">
-                  <span className="label">From</span>
-                  <span className="value">{selectedTicket.source}</span>
+                  <span className="label">Boarding Point (From)</span>
+                  <span className="value">{selectedTicket.boarding_stop || selectedTicket.source}</span>
                   <span className="sub-value">{selectedTicket.departure_time}</span>
                 </div>
                 <div className="ticket-info">
-                  <span className="label">To</span>
-                  <span className="value">{selectedTicket.destination}</span>
+                  <span className="label">Dropping Point (To)</span>
+                  <span className="value">{selectedTicket.dropping_stop || selectedTicket.destination}</span>
                   <span className="sub-value">{selectedTicket.arrival_time}</span>
                 </div>
               </div>

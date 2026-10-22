@@ -7,14 +7,18 @@ const {
   getBookingById,
   cancelBooking,
   getBookedSeats,
-  getAllBookingsAdmin
+  getAvailableSeats,
+  getAllBookingsAdmin,
+  getSeatDetails
 } = require('../controllers/bookingController');
 
 router.post('/', protect, createBooking);
 router.get('/my', protect, getMyBookings);
 router.get('/seats/:routeId', getBookedSeats);
+router.get('/available/:routeId', getAvailableSeats);
 router.get('/admin/all', protect, getAllBookingsAdmin);
+// Seat details with gender info
+router.get('/details/:routeId', getSeatDetails);
 router.get('/:id', protect, getBookingById);
-router.put('/:id/cancel', protect, cancelBooking);
 
 module.exports = router;
